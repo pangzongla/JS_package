@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>自己的完美轮播图</title>
+    <style>
+		body{-webkit-user-select: none; }
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        #swiper-wrap {
+            width: 520px;
+            height: 280px;
+            margin: 50px auto;
+            overflow: hidden;
+            position: relative;
+        }
+
+        #swiper-wrap #swiper {
+            list-style: none;
+            width: 2080px;
+            height: 280px;
+        }
+
+        #swiper-wrap #swiper li {
+            float: left;
+            width: 520px;
+            height: 280px;
+        }
+
+        #swiper-wrap div {
+            height: 50px;
+            width: 20px;
+            line-height: 50px;
+            text-align: center;
+            background-color: rgba(0, 0, 0, 0.3);
+            color: black;
+            position: absolute;
+            top: 115px;
+        }
+
+        #swiper-wrap #btnL {
+            left: 5px;
+        }
+
+        #swiper-wrap #btnR {
+            right: 5px;
+        }
+		
+		#swiper-wrap #point{
+			list-style: none;
+			position: absolute;
+			bottom: 10px;
+			left: 220px;
+			background-color: rgba(250,250,250,0.5);
+			padding: 5px;
+			border-radius: 25px;
+		}
+		#swiper-wrap #point li{
+			float: left;
+			width: 15px;
+			height: 15px;
+			border-radius: 50%;
+			background: #CCC;
+			margin-right: 5px;
+		}
+		#swiper-wrap #point li:last-child{
+			margin-right: 0;
+		}
+    </style>
+</head>
+
+<body>
+    <div id="swiper-wrap">
+        <ul id="swiper">
+            <li><img src="./img/1.webp" alt=""></li>
+            <li><img src="./img/2.jpg" alt=""></li>
+            <li><img src="./img/3.jpg" alt=""></li>
+            <li><img src="./img/4.webp" alt=""></li>
+        </ul>
+        <div id="btnL">&lt;</div>
+        <div id="btnR">&gt;</div>
+		<ul id="point">
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+		</ul>
+    </div>
+    <script>
+		// 获取左右切换按钮
+        var swiperWrap = document.getElementById("swiper-wrap")
+        var btn = swiperWrap.getElementsByTagName("div")
+		// 获取轮播图和图片集合
+        var oUl = document.getElementById("swiper")
+        var oLi = oUl.getElementsByTagName("li")
+		// 复制第一张加长到最后一张
+		var cloneLi = oLi[0].cloneNode(true)
+        oUl.appendChild(cloneLi)
+		oUl.style.width = oUl.offsetWidth + cloneLi.offsetWidth + "px"
+		// 获取点按钮
+		var point = document.getElementById("point")
+		var pointBtn = point.getElementsByTagName("li")
+		// 图片下标
+		var liIndex = 0
+		
+		pointTab()
+		
+		// 左右按钮切换逻辑
+        for (var i = 0; i < btn.length; i++) {
+			btn[i].whichBtn = i
+            btn[i].onclick = function () {
+				// 如果按得是右切按钮，否则就是左切按钮
+				if(this.whichBtn == 1){
+					toRight()
+					animate(oUl,{"marginLeft" : -520 * liIndex})
+					clearInterval(timer)
+					timer = setInterval(toRight, 2000)
+				}else{
+					liIndex--
+					if(liIndex < 0){
+						oUl.style.marginLeft = -(oUl.offsetWidth - cloneLi.offsetWidth) + "px"
+						liIndex = oLi.length-2
+					}
+					animate(oUl,{"marginLeft" : -520 * liIndex})
+					pointTab()
+					clearInterval(timer)
+					timer = setInterval(toRight, 2000)
+				}
+                
+				
+            }
+        }
+		
+		// 点击按钮手动点击切换
+		for(var i=0; i<pointBtn.length; i++){
+			pointBtn[i].index = i
+			pointBtn[i].onclick = function(){
+				// 让图片下标和点击原点的下标一致
+				liIndex = this.index
+				animate(oUl,{"marginLeft" : -520 * liIndex})
+				pointTab()
+				clearInterval(timer)
+				timer = setInterval(toRight, 2000)
+			}
+		}
+        
+		// 自动播放定时器
+        var timer = setInterval(toRight, 2000)
+
+        // 向右切换函数
+        function toRight() {
+            liIndex++
+            if(liIndex == oLi.length){
+            	oUl.style.marginLeft = 0
+            	liIndex = 1
+            }
+            animate(oUl,{"marginLeft" : -520 * liIndex})
+			pointTab()
+        }
+
+        // 点按钮的样式自动切换
+		function pointTab(){
+			for(var i=0; i<pointBtn.length; i++){
+				pointBtn[i].style.background = ""
+			}
+			if(liIndex == oLi.length-1){
+				pointBtn[0].style.background = "red"
+			}else{
+				pointBtn[liIndex].style.background = "red"
+			}
+		}
+
+        // 功能：实现水平竖直平移，宽或高改变，透明度变化效果
+        /* 
+        obj：表示元素对象
+        styleobj：把要设置的样式值，写成对象的形式，这样能同时实现多种效果
+        callback：回调函数 
+        */
+        function animate(obj, styleObj, callback) {
+            clearInterval(obj.timer)
+            obj.timer = setInterval(function () {
+                // 设置一个布尔判断
+                var bool = true
+                for (var whichStyle in styleObj) {
+                    // 如果传入的样式是不透明度
+                    if (whichStyle == "opacity") {
+                        var styleNum = parseFloat(getStyle(obj, whichStyle)) * 100
+                    } else {
+                        var styleNum = parseInt(getStyle(obj, whichStyle))
+                    }
+
+                    // 获取动态的加速度变化值
+                    var acceleration = (styleObj[whichStyle] - styleNum) / 10
+                    // 因为加速度的取值原因，是永远无法让实际数值刚好等于target
+                    // 所以需要让它取到整数
+                    acceleration = acceleration > 0 ? Math.ceil(acceleration) : Math.floor(acceleration)
+
+                    // 到设定目标值后，直接执行外面的if语句
+                    if (styleNum != styleObj[whichStyle]) {
+                        bool = false
+                    }
+
+                    // 是不透明度的就执行相对应的效果，不是就执行移动或改变宽高
+                    if (whichStyle == "opacity") {
+                        obj.style.filter = "alpha(opacity = " + styleNum + acceleration + ")"
+                        obj.style[whichStyle] = (styleNum + acceleration) / 100
+                    } else {
+                        obj.style[whichStyle] = styleNum + acceleration + "px"
+                    }
+                }
+
+                // 到设定目标值后停止
+                if (bool) {
+                    clearInterval(obj.timer)
+                    callback && callback()
+                }
+            }, 20)
+
+
+            function getStyle(obj, whichStyle) {
+                return window.getComputedStyle ? getComputedStyle(obj)[whichStyle] : obj.currentStyle[whichStyle]
+            }
+        }
+    </script>
+</body>
+
+</html>

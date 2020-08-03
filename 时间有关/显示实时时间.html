@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<style type="text/css">
+			body{
+				margin: 0;
+				padding: 0;
+				background-color: #000000;
+				color: white;
+				font-size: 50px;
+			}
+		</style>
+	</head>
+	<body>
+		<span id="hours"></span>
+		:
+		<span id="minutes"></span>
+		:
+		<span id="seconds"></span>
+		<script type="text/javascript">
+			var hours = document.getElementById("hours"),
+			    minutes = document.getElementById("minutes"),
+				seconds = document.getElementById("seconds")
+				
+			getTime(hours,minutes,seconds)	
+			
+			// 输入分别显示时分秒的元素对象
+			function getTime(hours,minutes,seconds) {
+				var date = new Date()
+				hours.innerHTML = toStr(date.getHours())
+				minutes.innerHTML = toStr(date.getMinutes())
+				seconds.innerHTML = toStr(date.getSeconds())
+				setInterval(getTime(hours,minutes,seconds),1000) //回调函数
+				// 统一显示两位数
+				function toStr(num){
+					if(num < 10){
+						return "0"+num
+					} else {
+						return num
+					}
+				}
+			}
+			
+		</script>
+	</body>
+</html>

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        img {
+            position: absolute;
+            left: 200px;
+            top: 200px;
+        }
+    </style>
+</head>
+
+<body>
+    <img src="./imgs/down-0.png" alt="" id="smallMan">
+    <script>
+        var Man = document.getElementById("smallMan")
+
+        runMan(Man)
+
+        function runMan(obj) {
+            var left = false,
+                right = false,
+                top = false,
+                bottom = false
+            var index = 0
+
+            // 防止改变方向后有断错感
+            setInterval(function () {
+                if (left) {
+                    obj.style.left = obj.offsetLeft - 10 + "px"
+                    direction("left")
+                } else if (top) {
+                    obj.style.top = obj.offsetTop - 10 + "px"
+                    direction("up")
+                } else if (right) {
+                    obj.style.left = obj.offsetLeft + 10 + "px"
+                    direction("right")
+                } else if (bottom) {
+                    obj.style.top = obj.offsetTop + 10 + "px"
+                    direction("down")
+                }
+            }, 30)
+
+            document.onkeydown = function (ev) {
+                var ev = ev || event
+                switch (ev.keyCode) {
+                    case 37:
+                        left = true
+                        break
+                    case 38:
+                        top = true
+                        break
+                    case 39:
+                        right = true
+                        break
+                    case 40:
+                        bottom = true
+                        break
+                }
+            }
+
+            document.onkeyup = function (ev) {
+                var ev = ev || event
+                switch (ev.keyCode) {
+                    case 37:
+                        left = false
+                        break
+                    case 38:
+                        top = false
+                        break
+                    case 39:
+                        right = false
+                        break
+                    case 40:
+                        bottom = false
+                        break
+                }
+            }
+
+            // 图片快速切换
+            function direction(dirt) {
+                obj.src = "./imgs/" + dirt + "-" + index + ".png"
+                index++
+                if (index > 4) {
+                    index = 0
+                }
+            }
+        }
+    </script>
+</body>
+
+</html>

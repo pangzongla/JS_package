@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        body{
+            padding: 0;
+            margin: 0;
+            background-color: black;
+        }
+        #box{
+            height: 100%;
+            width: 100%;
+            background: url("img/logo.png") center center/cover no-repeat;
+            position: absolute;
+            display: "block";
+        }
+        #btn{
+            position: absolute;
+            left: 50px;
+            top: 50px;
+            height: 80px;
+            width: 300px;
+            font-weight: bold;
+            font-size: 30px;
+            background-color: rgb(240, 231, 173);
+        }
+        #p1{
+            position: absolute;
+            left: 460px;
+            top: 550px;
+            color: rgb(108, 185, 43);
+            font-size: 70px;
+        }
+        #p2{
+            position: absolute;
+            left: 1100px;
+            top: 680px;
+        }
+    </style>
+</head>
+<body>
+<div id="box">
+    <button id="btn">点一下，玩一年</button>
+    <p id="p1">欢迎游玩庞氏贪吃蛇</p>
+    <p id="p2">版本号：v1.0 （2000年风格游戏）</p>
+</div>
+
+<script>
+<!--    -->
+//创建地图
+    function Map() {
+         this.width = 1520;
+         this.height = 720;
+         this.position = 'relative';
+         this._map = null;
+         this._idName = 'map';
+    };
+    Map.prototype.init = function () {
+        this._map = document.createElement('div');
+        this._map.style.width = this.width + 'px';
+        this._map.style.height = this.height + 'px';
+        this._map.style.position = this.position;
+        this._map.style.margin = '17px auto';
+        this._map.style.background = 'url("img/ground2.png") center center/cover no-repeat';
+        this._map.id = this._idName;
+
+        document.body.appendChild(this._map);
+    };
+
+//创建食物
+    function Food() {
+        this.width = 40;
+        this.height = 40;
+        this.position = "absolute";
+        this.oFood = null;
+        this.x = 0;
+        this.y = 0;
+        this.map = document.getElementById("map");
+    };
+    Food.prototype.init = function () {
+        if(this.oFood == null){
+            this.oFood = document.createElement('div');
+            this.oFood.style.width = this.width + 'px';
+            this.oFood.style.height = this.height + 'px';
+            this.oFood.style.position = this.position;
+            this.oFood.style.background = 'url("img/apple.png") center center/cover no-repeat';
+        //    在地图添加食物
+            this.map.appendChild(this.oFood);
+        }
+    //    将食物分布坐标轴栅格化
+        this.x = Math.floor(Math.random()*38);
+        this.y = Math.floor(Math.random()*18);
+        this.oFood.style.left = this.x * 40 + 'px';
+        this.oFood.style.top = this.y * 40 + 'px';
+    };
+
+//创建贪吃蛇
+    function Snake(food) {   //传入food，food为局部变量
+        this.width = 40;
+        this.height = 40;
+        this.position = 'absolute';
+        this.map = document.getElementById("map");
+        this.direct = "right";
+        this.num = 0;
+        this.timer = null;
+        //初始化蛇身
+        this.body = [
+            //[x,y,color,div]
+            [3,2,null,null],
+            [2,2,'green',null],
+            [1,2,'green',null],
+        ];
+        this.food = food;
+    }
+
+//功能函数封装
+    Snake.prototype.run = function () {
+        that = this;
+        this.show();
+        this.timer = setInterval(function () {
+            that.move();
+        },400);
+    //    控制方向
+        document.onkeydown = function (ev) {
+            var ev = ev || event;
+            that.setDirect(ev.keyCode);
+        }
+    };
+
+    //显示蛇身
+    Snake.prototype.show = function () {
+        for(var i=0; i<this.body.length; i++){
+            if (this.body[i][3] == null){  //判断蛇是否已经存在
+                this.body[i][3] = document.createElement('div');
+                this.body[i][3].style.width = this.width + "px";
+                this.body[i][3].style.height = this.height + "px";
+                this.body[i][3].style.backgroundColor = 'rgb(108, 185, 43)';
+                this.body[i][3].style.borderRadius = '20px';
+                this.body[i][3].style.position = this.position;
+                this.map.appendChild(this.body[i][3]);
+                this.body[0][3].style.background = 'url("img/headright.png") center center/cover no-repeat';
+
+            }
+            this.body[i][3].style.left = this.body[i][0] * 40 + 'px';
+            this.body[i][3].style.top = this.body[i][1] * 40 + 'px';
+        }
+    };
+
+    //动态相关
+    Snake.prototype.move = function () {
+        //身体部分
+        var len = this.body.length;
+        for(var i=len-1; i>0 ;i--){  //倒循环
+            this.body[i][0] = this.body[i-1][0];
+            this.body[i][1] = this.body[i-1][1];
+        }
+        //头部控制
+        switch (this.direct) {
+            case 'right':
+                this.body[0][0] += 1;
+                break;
+            case 'left':
+                this.body[0][0] -= 1;
+                break;
+            case 'up':
+                this.body[0][1] -= 1;
+                break;
+            case 'down':
+                this.body[0][1] += 1;
+                break;
+        }
+
+        //判断吃食物
+        if (this.body[0][0] === this.food.x && this.body[0][1] === this.food.y){
+            //蛇身添加
+            var len = this.body.length;
+            var x = this.body[len-1][0];
+            var y = this.body[len-1][1];
+            this.body.push([x,y,'green',null]);
+            //分数相加
+            this.num++;
+            document.title = "目前得分：" + this.num + "分";
+            //刷新食物
+            this.food.init()
+        }
+
+        //碰壁判断
+        if (this.body[0][0] < 0 || this.body[0][0] > 37 || this.body[0][1] < 0 || this.body[0][1] > 17){
+            clearInterval(this.timer);
+            switch(true){
+                case this.num >=8 && this.num <14:
+                    alert("蛇的舌头都没你的手抖，"+this.num+"分拿走！")
+                    break;
+                case this.num >=14 && this.num<20:
+                    alert("哈哈，你真菜！才拿"+this.num+"分！")
+                    break;
+                case this.num >=20 && this.num<30:
+                    alert(this.num+"分，有点意思，继续努力吧")
+                    break;
+                case this.num >=30:
+                    alert("awesome! 这"+this.num+"分是你独享的moment!")
+                    break;
+                default:
+                    alert(this.num+"分，我觉得你这辈子可以告别游戏了！")
+                    break;
+            }
+            document.location.reload();
+            return;  //防止this.show执行
+        }
+        //将新蛇身添加
+        this.show();
+    };
+
+    Snake.prototype.setDirect = function (keyCode) {
+        switch (keyCode) {
+            case 40:
+                this.direct = "down";
+                this.body[0][3].style.background = 'url("img/headdown.png") center center/cover no-repeat';
+                break;
+            case 38:
+                this.direct = "up";
+                this.body[0][3].style.background = 'url("img/headup.png") center center/cover no-repeat';
+
+                break;
+            case 37:
+                this.direct = "left";
+                this.body[0][3].style.background = 'url("img/headleft.png") center center/cover no-repeat';
+                break;
+            case 39:
+                this.direct = "right";
+                this.body[0][3].style.background = 'url("img/headright.png") center center/cover no-repeat';
+                break;
+        }
+    };
+
+    var oBox = document.getElementById("box");
+    var oBtn = document.getElementById("btn");
+    oBtn.onclick = function () {
+        oBox.style.display = "none";
+        var map = new Map();
+        map.init();
+
+        var food = new Food();
+        food.init();
+
+        var snake = new Snake(food);  //Snake的方法里有food对象
+        snake.run();
+    }
+
+</script>
+</body>
+</html>

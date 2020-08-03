@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        #box{
+            width: 300px;
+            height: 300px;
+            position: relative;
+            border: 1px solid #ccc;
+            left: 600px;
+            top: 100px;
+        }
+        #box img{
+            width: 300px;
+            height: 300px;
+        }
+        #box span{
+            width: 100px;
+            height: 100px;
+            position: absolute;
+            left: 0;
+            top: 0;
+            background-color: rgba(255,255,0,0.5);
+            display: none;
+        }
+        #box2{
+            width: 400px;
+            height: 400px;
+            position: absolute;
+            left: 950px;
+            top: 100px;
+            overflow: hidden;
+            border: 1px solid #cccccc;
+            display: none;
+        }
+        #bigImg{
+            position: absolute;
+            left: 0;
+            top: 0;
+        }
+    </style>
+</head>
+<body>
+<div id="box">
+    <img src="img/1_450x450.jpg" alt="">
+<!-- 遮罩-->
+    <span id="backdrop"></span>
+</div>
+<div id="box2">
+    <img id="bigImg" src="img/2_800x800.jpg" alt="">
+</div>
+<script>
+
+
+
+
+    function ScaleGlass() {
+        this.oBox = document.getElementById("box");
+        this.oBackdrop = document.getElementById("backdrop");
+        this.oBox2 = document.getElementById("box2");
+        this.oBigImg = document.getElementById("bigImg");
+    }
+    ScaleGlass.prototype.init = function () {
+        var that = this;
+        this.oBox.onmouseover = function (ev) {
+            that.fnOver();
+        }
+        this.oBox.onmouseout = function (ev) {
+            that.fnOut();
+        }
+        this.oBox.onmousemove = function (ev) {
+            that.fnMove(ev);
+        }
+    };
+    ScaleGlass.prototype.fnOver = function () {
+        this.oBackdrop.style.display = "block";
+        this.oBox2.style.display = "block";
+    };
+    ScaleGlass.prototype.fnOut = function () {
+        this.oBackdrop.style.display = "none";
+        this.oBox2.style.display = "none";
+    };
+    ScaleGlass.prototype.fnMove = function (ev) {
+        var ev = ev || event;
+        var L = ev.clientX - this.oBox.offsetLeft - this.oBackdrop.offsetWidth/2;
+        var T = ev.clientY - this.oBox.offsetTop - this.oBackdrop.offsetHeight/2;
+        if (L<0){
+            L = 0;
+        }
+        if (T<0){
+            T = 0;
+        }
+        if (L>this.oBox.offsetWidth - this.oBackdrop.offsetWidth){
+            L = this.oBox.offsetWidth - this.oBackdrop.offsetWidth;
+        }
+        if (T>this.oBox.offsetHeight - this.oBackdrop.offsetHeight){
+            T = this.oBox.offsetHeight - this.oBackdrop.offsetHeight;
+        }
+        this.oBackdrop.style.left = L + "px";
+        this.oBackdrop.style.top = T + "px";
+        var ScaleX = L / (this.oBox.offsetWidth - this.oBackdrop.offsetWidth);
+        var ScaleT = T/ (this.oBox.offsetHeight - this.oBackdrop.offsetHeight);
+        this.oBigImg.style.left = - ScaleX * (800 - this.oBox2.offsetWidth) + "px";
+        this.oBigImg.style.top = - ScaleT * (800 - this.oBox2.offsetHeight) + "px";
+    };
+    var s = new ScaleGlass();
+    s.init({
+
+    });
+</script>
+</body>
+</html>

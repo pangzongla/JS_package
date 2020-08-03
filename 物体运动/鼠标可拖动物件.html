@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>鼠标可拖动物体</title>
+		<style type="text/css">
+			* {
+				margin: 0;
+				padding: 0;
+			}
+
+			#box {
+				width: 200px;
+				height: 200px;
+				background-color: antiquewhite;
+				text-align: center;
+				line-height: 200px;
+				-webkit-user-select: none;
+				position: absolute;
+				left: 0;
+				top: 0;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="box">
+			按住我拖动
+		</div>
+		<script type="text/javascript">
+			var oBox = document.getElementById("box")
+			var nowLeft = 0
+			var nowTop = 0
+			oBox.onmousedown = function(ev) {
+				var ev = ev || event
+				nowLeft = ev.clientX - oBox.offsetLeft
+				nowTop = ev.clientY - oBox.offsetTop
+
+				document.onmousemove = function(ev) {
+					// 这里改为document是因为当鼠标移动过快,移出盒子后,盒子就不动了
+					var ev = ev || event
+					oBox.style.left = (ev.clientX - nowLeft) + "px"
+					oBox.style.top = (ev.clientY - nowTop) + "px"
+					if (ev.clientX - nowLeft < -100) {
+						oBox.style.left = -100 + "px"
+					}
+					if (ev.clientY - nowTop < -100) {
+						oBox.style.top = -100 + "px"
+					}
+				}
+
+				document.onmouseup = function() {
+					// 这里改为document是因为当鼠标移动出浏览器松开后,再移回来,还能继续移动
+					document.onmousemove = null
+				}
+			}
+		</script>
+	</body>
+</html>

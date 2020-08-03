@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<style type="text/css">
+			*{
+				margin: 0;
+				padding: 0;
+			}
+			.box{
+				width: 50px;
+				height: 50px;
+				background-color: #009F95;
+				position: absolute;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="box"></div>
+		<script type="text/javascript">
+			var oBox = document.getElementsByClassName("box")[0]
+			oBox.onclick = function() {
+				move(oBox,"left",200,10,10,function(){move(oBox,"left",0,-10,10)})
+			}
+			
+			// ----------------------------------------------------------------------------------------
+			/* obj为dom获取到的节点
+			direction为移动方向,"left"/"top"
+			end为移动到的终点值
+			step为每次移动的距离
+			speed为每次移动的时间
+			callback可以再调用一次自己,运动回来 */
+			function move(obj,direction,end,step,speed,callback){
+				var speed = speed || 100
+				clearInterval(timer)
+				obj.timer = setInterval(function() {
+					var activeParam = parseInt(getStyle(obj,direction)) + step
+					// 如果超过设置的终点就强制等于终点
+					if((activeParam > end && step > 0) || (activeParam < end && step < 0)){
+						activeParam = end
+					}
+					obj.style[direction] = activeParam + "px"
+					if(activeParam == end){
+						clearInterval(obj.timer)
+						callback && callback()
+					}
+				},speed)
+			}
+			
+			// 获取css值的兼容办法
+			function getStyle(obj, attr) {
+				return window.getComputedStyle ? getComputedStyle(obj)[attr] : obj.currentStyle[attr]
+			}
+		</script>
+	</body>
+</html>

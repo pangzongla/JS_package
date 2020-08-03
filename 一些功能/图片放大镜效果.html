@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<style type="text/css">
+			*{
+				margin: 0;
+				padding: 0;
+			}
+			#box{
+				width: 500px;
+				height: 300px;
+				border: 1px solid #cccccc;
+				margin-left: 20px;
+				margin-top: 20px;
+			}
+			#min{
+				float: left;
+				height: 200px;
+				width: 200px;
+				border: 1px solid black;
+				position: relative;
+			}
+			#min b{
+				position: absolute;
+				left: 0;
+				top: 0;
+				width: 100px;
+				height: 100px;
+				background-color: rgba(0,0,0,0.3);
+				display: none;
+			}
+			#max{
+				float: right;
+				height: 200px;
+				width: 200px;
+				overflow: hidden;
+				border: 1px solid black;
+				display: none;
+				position: relative;
+			}
+			#max #imgs{
+               position: absolute;
+			   left: 0;
+			   right: 0;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="box">
+			<div id="min"><img src="./img/minion1.png" alt=""><b id="moveArea"></b></div>
+			<div id="max"><img src="./img/minion2.png" alt="" id="imgs"></div>
+		</div>
+		<script>
+			// 未解决问题,不带开f12的情况下,效果无法触发
+			
+			var min = document.getElementById("min")
+			var max = document.getElementById("max")
+			var b = document.getElementById("moveArea")
+			var imgs = document.getElementById("imgs")
+
+			min.onmousemove = function(ev){
+				// alert(1)
+				b.style.display = "block"
+				max.style.display = "block"
+				var ev = ev || event
+				// 文档的滚动距离兼容
+				var scrollX = document.documentElement.scrollLeft || document.body.scrollLeft
+				var scrollY = document.documentElement.scrollTop || document.body.scrollTop
+				// 跟随鼠标移动的盒子的实时位置
+				var x = ev.clientX + scrollX - min.offsetLeft - b.offsetWidth/2
+				var y = ev.clientY + scrollY -min.offsetTop - b.offsetHeight/2	
+				// 控制不要超出范围	
+				if(x < 0){
+					x = 0
+				}else if(x > min.offsetWidth - b.offsetWidth){
+					x = min.offsetWidth - b.offsetWidth
+				}
+				if(y < 0){
+					y = 0
+				}else if(y > min.offsetHeight - b.offsetHeight){
+					y = min.offsetHeight - b.offsetHeight
+				}
+				b.style.left = x + "px"
+				b.style.top = y + "px"
+
+				imgs.style.left = -2*x + "px"
+				imgs.style.top = -2*y + "px"
+			}
+			min.onmouseout = function(){
+				b.style.display = "none"
+				max.style.display = "none"
+			}
+		</script>
+	</body>
+</html>

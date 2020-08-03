@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #text {
+            width: 600px;
+            height: 600px;
+            border: 1px solid black;
+            margin-top: 10px;
+            padding: 10px;
+        }
+        ul li{
+            list-style: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div>简易留言板</div>
+    <input id="ipt" type="text">
+    <button id="btn">留言</button>
+    <ul id="text"></ul>
+    <script>
+        var oIpt = document.getElementById("ipt")
+        var oBtn = document.getElementById("btn")
+        var oUl = document.getElementById("text")
+        oBtn.onclick = function () {
+            var oLi = document.createElement("li")
+            var aLi = document.getElementsByTagName("li")
+            oLi.innerHTML = oIpt.value + "<a href='javascript:;'>删除</a>"
+            // oUl.appendChild(oLi)  这样新的留言都排在后面了
+            oUl.insertBefore(oLi,aLi[0])
+            var aA = document.getElementsByTagName("a")
+            for(var i =0; i < aA.length; i++){  // 注意这个循环不要放到函数外面了，因为点击事件还没触发时a标签还没生成，此时循环已经结束
+                aA[i].onclick = function() {
+                    oUl.removeChild(this.parentNode)
+                }
+            }
+        } 
+    </script>
+</body>
+
+</html>

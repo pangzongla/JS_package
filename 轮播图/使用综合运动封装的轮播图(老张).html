@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        #swiper-wrap {
+            width: 520px;
+            height: 280px;
+            margin: 50px auto;
+            /* overflow: hidden; */
+            position: relative;
+        }
+
+        #swiper-wrap ul {
+            list-style: none;
+            width: 2080px;
+            height: 280px;
+        }
+
+        #swiper-wrap ul li {
+            float: left;
+            width: 520px;
+            height: 280px;
+        }
+
+        #swiper-wrap div {
+            height: 50px;
+            width: 20px;
+            line-height: 50px;
+            text-align: center;
+            background-color: rgba(0, 0, 0, 0.3);
+            color: black;
+            position: absolute;
+            top: 115px;
+        }
+
+        #swiper-wrap #btnL {
+            left: 5px;
+        }
+
+        #swiper-wrap #btnR {
+            right: 5px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="swiper-wrap">
+        <ul id="swiper">
+            <li><img src="./img/1.webp" alt=""></li>
+            <li><img src="./img/2.jpg" alt=""></li>
+            <li><img src="./img/3.jpg" alt=""></li>
+            <li><img src="./img/4.webp" alt=""></li>
+        </ul>
+        <div id="btnL">&lt;</div>
+        <div id="btnR">&gt;</div>
+    </div>
+    <script>
+
+        // 待改进点：点击右切不能连续点击
+
+        var swiperWrap = document.getElementById("swiper-wrap")
+        var btn = swiperWrap.getElementsByTagName("div")
+        var oUl = document.getElementById("swiper")
+        var oLi = document.getElementsByTagName("li")
+
+        for (var i = 0; i < btn.length; i++) {
+            btn[i].index = i
+            btn[i].onclick = function () {
+                // 如果点击的是左键
+                if (this.index == 0) {
+                    // clearInterval(timer)
+                    // 先把最后一张插在第一张，保持显示在第二张，用动画切到第一张
+                    oUl.style.marginLeft = "-520px"
+                    oUl.insertBefore(oUl.lastElementChild, oLi[0])
+                    animate(oUl, { "marginLeft": 0 })
+                    // timer = setInterval(toRight, 2000)
+                } else {
+                    // clearInterval(timer)
+                    // 否则就是点击的是右键，用动画切到下一张，把第一张插到最后一张，保持显示第一张
+                    animate(oUl, { "marginLeft": -520 }, function () {
+                        oUl.style.marginLeft = "0"
+                        oUl.appendChild(oUl.firstElementChild)
+                    })
+                }
+            }
+        }
+
+
+
+
+        // 功能：实现水平竖直平移，宽或高改变，透明度变化效果
+        /* 
+        obj：表示元素对象
+        styleobj：把要设置的样式值，写成对象的形式，这样能同时实现多种效果
+        callback：回调函数 
+        */
+        function animate(obj, styleObj, callback) {
+            clearInterval(obj.timer)
+            obj.timer = setInterval(function () {
+                // 设置一个布尔判断
+                var bool = true
+                for (var whichStyle in styleObj) {
+                    // 如果传入的样式是不透明度
+                    if (whichStyle == "opacity") {
+                        var styleNum = parseFloat(getStyle(obj, whichStyle)) * 100
+                    } else {
+                        var styleNum = parseInt(getStyle(obj, whichStyle))
+                    }
+
+                    // 获取动态的加速度变化值
+                    var acceleration = (styleObj[whichStyle] - styleNum) / 10
+                    // 因为加速度的取值原因，是永远无法让实际数值刚好等于target
+                    // 所以需要让它取到整数
+                    acceleration = acceleration > 0 ? Math.ceil(acceleration) : Math.floor(acceleration)
+
+                    // 到设定目标值后，直接执行外面的if语句
+                    if (styleNum != styleObj[whichStyle]) {
+                        bool = false
+                    }
+
+                    // 是不透明度的就执行相对应的效果，不是就执行移动或改变宽高
+                    if (whichStyle == "opacity") {
+                        obj.style.filter = "alpha(opacity = " + styleNum + acceleration + ")"
+                        obj.style[whichStyle] = (styleNum + acceleration) / 100
+                    } else {
+                        obj.style[whichStyle] = styleNum + acceleration + "px"
+                    }
+                }
+
+                // 到设定目标值后停止
+                if (bool) {
+                    clearInterval(obj.timer)
+                    callback && callback()
+                }
+            }, 20)
+
+
+            function getStyle(obj, whichStyle) {
+                return window.getComputedStyle ? getComputedStyle(obj)[whichStyle] : obj.currentStyle[whichStyle]
+            }
+        }
+    </script>
+</body>
+
+</html>

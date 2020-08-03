@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Document</title>
+		<style>
+			* {
+				margin: 0;
+				padding: 0;
+			}
+
+			#box {
+				width: 400px;
+				height: 100px;
+				border: 1px solid black;
+				overflow: hidden;
+			}
+
+			#box ul {
+				list-style: none;
+			}
+
+			#box ul li {
+				float: left;
+				width: 100px;
+				height: 100px;
+				text-align: center;
+				line-height: 100px;
+				background-color: brown;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div id="box">
+			<ul>
+				<li>1</li>
+				<li>2</li>
+				<li>3</li>
+				<li>4</li>
+				<li>5</li>
+			</ul>
+		</div>
+		<script>
+			function ScrollBar(options) {
+				// 获取根节点
+				this.el = document.getElementById(options.el);
+				// 根节点下的ul和li
+				this.ul = this.el.getElementsByTagName("ul")[0]
+				this.li = this.ul.getElementsByTagName("li")
+				// 指定xy方向滚动
+				this.direction = options.direction
+				// 滚动速度
+				this.speed = options.speed
+				// 设定移动数值
+				this.index = 0
+				// 获取li的数量
+				this.liNum = this.li.length
+				
+				this.init()
+			}
+
+			ScrollBar.prototype = {
+				// 初始化判断滚动方向
+				init: function() {
+					if (this.direction == "x") {
+						this.run("width", "marginLeft")
+					} else if (this.direction == "y") {
+						this.run("height", "marginTop")
+					}
+				},
+				run: function(WorH, LorT) {
+					var that = this
+					// 赋予ul的总长
+					this.liLong = parseInt(this.getStyle(this.li[0],WorH))
+					this.ul.style[WorH] = this.liLong * this.li.length + "px"
+					setInterval(function() {
+						that.index--
+						that.ul.style[LorT] = that.index + "px"
+						// 每当移动的距离大于一个li后,就自动补充li,且清除现在移动量,ul归位
+						if (Math.abs(that.index) > that.liLong) {
+							that.ul.appendChild(that.ul.firstElementChild)
+							that.index = 0
+							that.ul.style[LorT] = "0px"
+						}
+					}, this.speed)
+				},
+				getStyle: function(obj, whichStyle) {
+					return window.getComputedStyle ? getComputedStyle(obj)[whichStyle] : obj.currentStyle[whichStyle]
+				}
+			}
+
+			new ScrollBar({
+				el: "box",
+				direction: "x",
+				speed: 30
+			})
+		</script>
+	</body>
+
+</html>

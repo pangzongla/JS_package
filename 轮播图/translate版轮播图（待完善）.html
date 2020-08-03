@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<title>看不起</title>
+	<style type="text/css">
+		* {
+			margin: 0;
+			padding: 0;
+		}
+
+		#wrap {
+			width: 600px;
+			height: 400px;
+			margin: 0 auto;
+			overflow: hidden;
+			position: relative;
+		}
+
+		#wrap #swiper {
+			width: 2400px;
+			height: 400px;
+			font-size: 0;
+			position: absolute;
+			transition: all 0.5s;
+		}
+
+		#wrap #swiper li {
+			display: inline-block;
+			font-size: 50px;
+			line-height: 400px;
+			text-align: center;
+			width: 600px;
+			height: 400px;
+			background: url(./img/logo.png) center center/100% no-repeat;
+		}
+
+		#wrap div {
+			position: absolute;
+			width: 20px;
+			height: 20px;
+			text-align: center;
+			line-height: 20px;
+			background-color: rgba(0, 0, 0, 0.1);
+			top: 190px;
+		}
+
+		#wrap #left {
+			left: 5px;
+		}
+
+		#wrap #right {
+			right: 5px;
+		}
+	</style>
+</head>
+
+<body>
+	<div id="wrap">
+		<ul id="swiper">
+			<li>1</li>
+			<li>2</li>
+			<li>3</li>
+			<li>4</li>
+		</ul>
+		<div id="left">&lt;</div>
+		<div id="right">&gt;</div>
+	</div>
+	<script type="text/javascript">
+		// 目前未解决的问题: 点击切换业务, 第一张停顿的时间是设定的两倍
+		var oLeft = document.getElementById("left")
+		var oRight = document.getElementById("right")
+		var swiper = document.getElementById("swiper")
+
+		window.onload = swiperAuto(swiper, 4, 600, 2000)
+
+		function swiperAuto(obj, picNum, picWidth, popTime) {
+			var index = 1
+			obj.timer = setInterval(function () {
+				if (index == picNum) {
+					obj.style.transition = "all 0s"
+					obj.style.transform = "translateX(0)"
+					clearInterval(obj.timer)
+					swiperAuto(obj, picNum, picWidth, popTime)
+				} else {
+					obj.style.transition = "all 0.5s"
+					obj.style.transform = "translateX(" + "-" + picWidth * index + "px" + ")"
+					index++
+				}
+			}, popTime)
+
+			oLeft.onclick = function () {
+				clearInterval(obj.timer)
+				obj.style.transition = "all 0.5s"
+				// if(index == 1 || index == picNum){
+				// 	obj.style.transform = "translateX(-1200px)"
+				// 	index = 3
+				// } else {
+				// 	obj.style.transform = "translateX(" + "-" + picWidth*(index-2) + "px" + ")"
+				// 	index--
+				// }
+				obj.style.transform = "translateX(" + "-" + picWidth * (index - 2) + "px" + ")"
+				swiperAuto(obj, picNum, picWidth, popTime)
+			}
+		}
+
+
+	</script>
+</body>
+
+</html>
