@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Document</title>
+		<style>
+			* {
+				margin: 0;
+				padding: 0;
+				list-style: none;
+			}
+
+			#title {
+				width: 300px;
+				height: 50px;
+			}
+
+			#title li {
+				float: left;
+				width: 150px;
+				height: 50px;
+				text-align: center;
+				line-height: 50px;
+			}
+
+			#title .active {
+				background-color: #e6e6e6;
+			}
+
+			#title1 ul li,
+			#title2 ul li {
+				width: 300px;
+				height: 30px;
+				text-align: center;
+				line-height: 30px;
+			}
+
+			#title2 {
+				display: none;
+			}
+		</style>
+	</head>
+
+	<body>
+		<ul id="title">
+			<li class="active">信息公告</li>
+			<li>服务公告</li>
+		</ul>
+		<div id="content">
+			<div id="title1">
+				<ul>
+					<li>20万图书每满100减40</li>
+					<li>夏季防蚊祛痱3件5折</li>
+					<li>当当优品庆六一 0利 4轮秒杀</li>
+					<li>童装童鞋全场满200减100</li>
+					<li>六一礼品季童书1.9-4.9折封</li>
+				</ul>
+			</div>
+
+			<div id="title2">
+				<ul>
+					<li>积分支付上线了，直接当钱用</li>
+					<li> 当当阅读器 海量电子书随时读</li>
+					<li>端午撞六一，礼品卡钜惠</li>
+					<li>自营商品满39包邮啦！</li>
+					<li>关于假冒客服诈骗的声明</li>
+				</ul>
+			</div>
+		</div>
+
+		<script>
+			// options传入的是一个对象
+			function Tab(options) {
+				this.title = document.getElementById(options.title);
+				this.titlecontent = this.title.getElementsByTagName(options.titlecontent);
+				this.content = document.getElementById(options.content);
+				this.contentDiv = this.content.getElementsByTagName(options.contentDiv);
+				this.events = options.events;
+				this.init()
+			}
+
+			Tab.prototype = {
+				// 效果的开始，要做的事
+				init: function() {
+					var that = this
+					for (var i = 0; i < this.titlecontent.length; i++) {
+						this.titlecontent[i].index = i
+						this.titlecontent[i][this.events] = function() {
+							that.tabChange(this.index)
+						}
+					}
+				},
+
+				tabChange: function(i) {
+					for (var j = 0; j < this.contentDiv.length; j++) {
+						this.titlecontent[j].className = ""
+						this.contentDiv[j].style.display = "none"
+					}
+					this.titlecontent[i].className = "active"
+					this.contentDiv[i].style.display = "block"
+				}
+			}
+
+			var b = new Tab({
+				// 标题标签
+				title: "title",
+				titlecontent: "li",
+				// 对应的内容
+				content: "content",
+				contentDiv: "div",
+				// 触发什么事件
+				events: "onmouseover"
+			})
+		</script>
+	</body>
+
+</html>

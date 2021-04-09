@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    省：<select name="" id="pro"></select>
+    市：<select name="" id="city"></select>
+    区：<select name="" id="area"></select>
+    <script>
+		// bug一开始选北京,会没有反应
+        var arr = [
+            "北京", [
+                "海淀", ["海淀1", "海淀2", "海淀3"],
+                "朝阳", ["朝阳1", "朝阳2", "朝阳3"]
+            ],
+            "山东", [
+                "青岛", ["青岛1", "青岛2", "青岛3"],
+                "济南", ["济南1", "济南2", "济南3"]
+            ],
+            "河北", [
+                "石家庄", ["石家庄1", "石家庄2", "石家庄3"],
+                "张家口", ["张家口1", "张家口2", "张家口3"]
+            ]
+        ]
+        var pro = document.getElementById("pro")
+        var city = document.getElementById("city")
+        var area = document.getElementById("area")
+
+        for (var i = 0; i < arr.length; i++) {
+            if (typeof arr[i] == "string") { // 注意typeof的用法哦，类型判断用字符串格式
+                pro.add(new Option(arr[i], arr[i])) // 可用这种方式给select标签添加option标签，第一个参数填value值，第二个填内容
+            }
+        }
+        
+        // 当省份修改时
+        pro.onchange = function () {
+            // 先清除一下之前的option，要不新添加的option就会添加在之后
+            city.innerHTML = ""
+            for (var i = 0; i < arr.length; i++) {
+                if (typeof arr[i] == "string") {
+                    // 如果遍历出来和选的省一样，就赋值后面的城市
+                    if (pro.value == arr[i]) {
+                        var brr = arr[i + 1]
+                        // 把对应城市遍历出来
+                        for (var j = 0; j < brr.length; j++) {
+                            if (typeof brr[j] == "string")
+                                city.add(new Option(brr[j], brr[j]))
+                        }
+                    }
+                }
+            }
+        }
+
+        city.onchange = function () {
+            area.innerHTML = "";
+            for (var i = 0; i < arr.length; i++) {
+                if (typeof arr[i] != "string") {
+                    var brr = arr[i]
+                    for (var j = 0; j < brr.length; j++) {
+                        if (typeof brr[j] == "string") {
+                            if (city.value == brr[j]) {
+                                var crr = brr[j+1]
+                                for (var k = 0; k < crr.length; k++) {
+                                    area.add(new Option(crr[k], crr[k]))
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+		<title></title>
+		<style type="text/css">
+			.item {
+				display: inline-block;
+				height: 400px;
+				width: 400px;
+				vertical-align: middle;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="wrap">
+			<div class="item">
+				<img src="" v-src="vue.png">
+			</div>
+			<div class="item">
+				<img src="" v-src="vue.png">
+			</div>
+			<div class="item">
+				<img src="" v-src="vue.png">
+			</div>
+			<div class="item">
+				<img src="" v-src="vue.png">
+			</div>
+			<div class="item">
+				<img src="" v-src="vue.png">
+			</div>
+			<div class="item">
+				<img src="" v-src="vue.png">
+			</div>
+			<div class="item">
+				<img src="" v-src="vue.png">
+			</div>
+			<div class="item">
+				<img src="" v-src="vue.png">
+			</div>
+			<div class="item">
+				<img src="" v-src="vue.png">
+			</div>
+		</div>
+		<script type="text/javascript">
+			var items = document.getElementsByClassName("item")
+			// 设置默认滚动距离
+            var scrollTops = 0
+			
+			// 浏览器滚动就触发
+			window.onscroll = function() {
+				// 获取纵向滚动距离
+				scrollTops = window.scrollY
+				run()
+			}
+			
+			run()
+			
+			// 需要渲染的就将自定义属性的图片地址给src
+			function run(){
+				for (var i = 0; i < items.length; i++) {
+					var topNum = items[i].offsetTop
+					var itemHeight = parseInt(getComputedStyle(items[i])['height'])
+					// 当图片离顶部的距离+图片默认高度/2 小于浏览器高度 + 滚动距离时,就加载图片
+					if (topNum + itemHeight / 2 < window.innerHeight + scrollTops && items[i].firstElementChild.getAttribute('src') == "") {
+						items[i].firstElementChild.src = items[i].firstElementChild.getAttribute('v-src')
+					}
+				}
+			}
+
+		</script>
+	</body>
+</html>

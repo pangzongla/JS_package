@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>H5端</title>
+		<style type="text/css">
+			html {
+				font-size: 62.5%
+			}
+
+			.wrap {
+				display: flex;
+				justify-content: center;
+			}
+
+			.container {
+				position: relative;
+			}
+
+			#around {
+				width: 80rem;
+				height: 80rem;
+			}
+
+			#arrow {
+				position: absolute;
+				left: 50%;
+				top: 50%;
+				transform: translate(-50%, -50%);
+			}
+		</style>
+	</head>
+	<body>
+		<div class="wrap">
+			<div class="container">
+				<img src="img/around.png" id="around">
+				<img src="img/arrow.png" id="arrow">
+			</div>
+		</div>
+		<script type="text/javascript">
+			var aroundDom = document.getElementById("around")
+			var arrowDom = document.getElementById("arrow")
+
+			arrowDom.onclick = function() {
+				arrowDom.style.pointerEvents = "none" // 防止疯狂连续点击
+				let randomNum = Math.ceil(Math.random() * 360) // 真正的相对转动角度
+				let deg = 8 * 360 + randomNum // 让其多转8圈
+				aroundDom.style.transform = `rotate(${deg}deg)`
+				aroundDom.style.transition = "5s"
+				setTimeout(() => {
+					stopFn(randomNum) // 传相对转角是为了保存位置
+				}, 5000)
+			}
+
+			function stopFn(deg) {
+				if (deg >= 0 && deg <= 51) {
+					alert("免单4999");
+				} else if (deg > 51 && deg <= 102) {
+					alert("免单50")
+				} else if (deg > 102 && deg <= 153) {
+					alert("免单10")
+				} else if (deg > 153 && deg <= 204) {
+					alert("免单5")
+				} else if (deg > 204 && deg <= 255) {
+					alert("免分期")
+				} else if (deg > 255 && deg <= 306) {
+					alert("提额度")
+				} else {
+					alert("未中奖")
+				}
+				aroundDom.style.transform = `rotate(${deg}deg)` 
+				aroundDom.style.transition = ""
+				aroundDom.dataset.rotate = deg; // 自定义属性记录上次转多少
+				arrowDom.style.pointerEvents = "all" 
+			}
+		</script>
+	</body>
+</html>

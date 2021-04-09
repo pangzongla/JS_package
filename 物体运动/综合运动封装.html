@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        #box {
+            width: 300px;
+            height: 300px;
+            background: blue;
+            position: absolute;
+            left: 0;
+            top: 0;
+            opacity: 0.5;
+            filter: alpha(opacity=30)
+        }
+    </style>
+</head>
+
+<body>
+    <div id="box"></div>
+    <script>
+        var oBox = document.getElementById("box")
+
+        oBox.onclick = function () {
+            animate(oBox,{"opacity": 0},function () {
+                animate(oBox,{"opacity": 100})
+            })
+        }
+        // 功能：实现水平竖直平移，宽或高改变，透明度变化效果
+        /* 
+        obj：表示元素对象
+        styleobj：把要设置的样式值，写成对象的形式，这样能同时实现多种效果(opacity需要输入100的形式，键需要用“”)
+        callback：回调函数 
+        */
+        function animate(obj, styleObj, callback) {
+            clearInterval(obj.timer)
+            obj.timer = setInterval(function () {
+                // 设置一个布尔判是否到达设定值
+                var bool = true
+				// 循环传入样式的键值对，每一轮对一个样式属性做什么逻辑
+                for (var whichStyle in styleObj) {
+                    // 如果循环出传入的样式是不透明度，就把它*100，兼容低版本的ie
+                    if (whichStyle == "opacity") {
+						// 把实时的数值获取
+                        var styleNum = parseFloat(getStyle(obj, whichStyle)) * 100
+                    } else {
+                        var styleNum = parseInt(getStyle(obj, whichStyle))
+                    }
+
+                    // 获取动态的加速度变化值
+                    var acceleration = ( styleObj[whichStyle] - styleNum) / 10
+                    // 因为加速度的取值原因，是永远无法让实际数值刚好等于target
+                    // 所以需要让它取到整数
+                    acceleration = acceleration > 0 ? Math.ceil(acceleration) : Math.floor(acceleration)
+                    
+                    // 循环到设定目标值后，直接执行外面的if语句
+                    if(styleNum != styleObj[whichStyle]){
+                        bool = false
+                    }
+
+                    // 是不透明度的就执行相对应的效果，不是就执行移动或改变宽高
+                    if (whichStyle == "opacity") {
+                        obj.style.filter = "alpha(opacity = " + styleNum + acceleration + ")"
+                        obj.style[whichStyle] = (styleNum + acceleration) / 100
+                    } else {
+                        obj.style[whichStyle] = styleNum + acceleration + "px"
+                    }
+                }
+
+                // 到设定目标值后停止
+                if (bool) {
+                    clearInterval(obj.timer)
+                    callback && callback()
+                }
+            }, 30)
+
+
+            function getStyle(obj, whichStyle) {
+                return window.getComputedStyle ? getComputedStyle(obj)[whichStyle] : obj.currentStyle[whichStyle]
+            }
+        }
+    </script>
+</body>
+
+</html>

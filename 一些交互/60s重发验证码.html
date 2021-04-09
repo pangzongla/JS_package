@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>60s重发验证码</title>
+	</head>
+	<body>
+		<input type="button" name="" id="btn" value="发送验证码" />
+		<!-- 也可以换成button标签 -->
+		 <!-- <button id="btn">发送验证码</button> -->
+		<script type="text/javascript">
+			var oBtn = document.getElementById("btn")
+			var count = 5
+			oBtn.onclick = function(){
+				oBtn.disabled = true
+				oBtn.value = count + "s后重发"
+				// oBtn.innerHTML = time+"s后重发"
+				var timer = setInterval(function(){
+					if(count > 0){
+						count--
+						oBtn.value = count + "s后重发"
+					}else{
+						clearInterval(timer)
+						oBtn.value = "发送验证码"
+						oBtn.disabled = false
+						count = 5
+					}
+				},1000)
+			}
+			
+			// 用递归加setTimeout的方法
+/* 			oBtn.onclick = function(){
+				this.disabled = true
+				sendCode()
+			}
+			function sendCode(){
+				oBtn.innerHTML = time+"s后重发"
+				count--
+				if(time>0){     //递归出入口
+					setTimeout(sendCode,1000)
+				}else{
+					oBtn.innerHTML = "发送验证码"
+					oBtn.disabled = false
+					count = 5
+				}
+			} */
+		</script>
+	</body>
+</html>

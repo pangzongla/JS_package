@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+<time></time>
+<script>
+	// 实现一个计算当年还剩多少时间的倒数计时程序,要求网页实时动态显示"xx年还剩xx天xx时xx分xx秒"
+function isDate(){
+	var time = document.getElementsByTagName("time")[0];
+	var date = new Date();
+	var year = date.getFullYear();
+	var newDate = new Date();
+	newDate.setFullYear( year+1 ) //2019年
+	newDate.setMonth(0,1);//月
+	newDate.setHours(0,0,0);//时
+	var iTime = newDate.getTime()-date.getTime();
+	/* var iSecond = parseInt(iTime/1000);
+	var newDay = parseInt(iSecond/24/60/60);
+	var modeDay = iSecond%(24*60*60);
+	var newHour = parseInt(modeDay/60/60);
+	var modeHour = modeDay%(60*60);
+	var newMinute = parseInt(modeHour/60);
+	var modeMinute = modeHour%60;
+	var newSecond = parseInt(modeMinute); */
+	var newDay = parseInt(iTime/1000/60/60/24)
+	var newHour = parseInt(iTime/1000/60/60%24)  //注意，余什么就等于什么
+	var newMinute = parseInt(iTime/1000/60%60)
+	var newSecond = parseInt(iTime/1000%60)
+	time.innerHTML = year+"年"+"还剩"+newDay+"天"+newHour+"小时"+newMinute+"分钟"+newSecond+"秒";
+}
+isDate();
+setInterval(isDate,1000)
+</script>
+
+	
+</body>
+</html>
