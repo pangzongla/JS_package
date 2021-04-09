@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!DOCTYPE html>
 <html lang="en">
 
@@ -67,4 +68,75 @@
     </script>
 </body>
 
+=======
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        #box {
+            width: 400px;
+            height: 100px;
+            border: 1px solid black;
+            overflow: hidden;
+        }
+
+        #box ul {
+            list-style: none;
+        }
+
+        #box ul li {
+            float: left;
+            width: 100px;
+            height: 100px;
+            text-align: center;
+            line-height: 100px;
+            background-color: brown;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="box">
+        <ul>
+            <li>1</li>
+            <li>2</li>
+            <li>3</li>
+            <li>4</li>
+            <li>5</li>
+        </ul>
+    </div>
+    <script>
+        var oBox = document.getElementById("box")
+        var oUl = oBox.getElementsByTagName("ul")[0]
+        var aLi = oUl.getElementsByTagName("li")
+        var liWidth = parseInt(getStyle(aLi[0], "width"))
+        oUl.style.width = aLi.length * liWidth + "px"
+        var index = 0
+
+        setInterval(function () {
+            index--
+            oUl.style.marginLeft = index + "px"
+            if (Math.abs(index) > liWidth) {
+                oUl.appendChild(oUl.firstElementChild)
+                index = 0
+                oUl.style.marginLeft = "0px"
+            }
+        }, 50)
+
+        function getStyle(obj, whichStyle) {
+            return window.getComputedStyle ? getComputedStyle(obj)[whichStyle] : obj.currentStyle[whichStyle]
+        }
+    </script>
+</body>
+
+>>>>>>> 54dc926e033382b984d277118489c25166d63e2e
 </html>

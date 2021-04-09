@@ -2,6 +2,7 @@
 <html>
 	<head>
 		<meta charset="utf-8">
+<<<<<<< HEAD
 		<title></title>
 		<style type="text/css" id="style-type"></style>
 	</head>
@@ -22,6 +23,28 @@
 					 clearInterval(timer)
 				 }
 			 },10)
+=======
+		<title></title>
+		<style type="text/css" id="style-type"></style>
+	</head>
+	<body>
+		<script type="text/javascript">
+			var style_text = `
+				// 这里写css样式
+			`
+			var style_type = document.getElementById("style-type")
+			var style_text_obj = document.getElementById("style-text")
+			 
+			 var n = 1
+			 var timer = setInterval(function(){
+				 style_type.innerHTML = style_text.substring(0,n)
+				 style_text_obj.innerHTML = style_text.substring(0,n)
+				 n++
+				 if(n === style_text.length){ //str.substring(0,str.length)，不用加1，已经获取全了
+					 clearInterval(timer)
+				 }
+			 },10)
+>>>>>>> 54dc926e033382b984d277118489c25166d63e2e
 		</script>
 	</body>
 </html>

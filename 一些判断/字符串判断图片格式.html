@@ -2,6 +2,7 @@
 <html>
 	<head>
 		<meta charset="utf-8">
+<<<<<<< HEAD
 		<title>字符串判断图片格式</title>
 		<!-- 需求：点击图片上传按钮，判断图片格式是否符合要求(png.jpg.gif.bmp) -->
 	</head>
@@ -32,6 +33,38 @@
 				}
 				return false
 			}
+=======
+		<title>字符串判断图片格式</title>
+		<!-- 需求：点击图片上传按钮，判断图片格式是否符合要求(png.jpg.gif.bmp) -->
+	</head>
+	<body>
+		<input type="file" name="" id="btn" value="" />
+		<script type="text/javascript">
+			var oBtn = document.getElementById("btn")
+			// var fileValue = oBtn.value 写在这里fileValue值是不会改变的
+			oBtn.onchange = function () {
+               var fileValue = this.value
+			   var format = fileValue.substr(fileValue.lastIndexOf("."))
+			   var res = checkFormat(format)
+			   if(res){
+				   alert("图片格式正确")
+			   }else{
+				   alert("图片格式不正确。只支持jpg，png格式")
+				   this.value = ""
+			   }
+			}
+			
+			// 检查机制
+			function checkFormat(n){
+				var fileFormat = [".png",".jpg",".PNG",".JPG"]
+				for(var i = 0; i < fileFormat.length; i++){
+					if(fileFormat[i] === n){
+						return true
+					}
+				}
+				return false
+			}
+>>>>>>> 54dc926e033382b984d277118489c25166d63e2e
 		</script>
 	</body>
 </html>

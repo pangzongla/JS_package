@@ -2,6 +2,7 @@
 <html>
 	<head>
 		<meta charset="utf-8">
+<<<<<<< HEAD
 		<title></title>
 		<style type="text/css">
 			*{
@@ -122,6 +123,128 @@
 				aLi[index].style.display = "block"
 				aOl[index].className = "active"
 			}
+=======
+		<title></title>
+		<style type="text/css">
+			*{
+				margin: 0;
+				padding: 0;
+			}
+			#contaniner{
+				width: 600px;
+				height: 400px;
+				margin: 0 auto;
+				overflow: hidden;
+				position: relative;
+			}
+			ul, ol{
+				list-style: none;
+			}
+			ul li{
+				float: left;
+				width: 600px;
+				height: 400px;
+				font-size: 50px;
+				text-align: center;
+				line-height: 400px;
+				background-color: #FFD700;
+			}
+			/* img{
+				width: 600px;
+				height: 400px;
+			} */
+			#contaniner div{
+				position: absolute;
+				width: 20px;
+				height: 20px;
+				text-align: center;
+				line-height: 20px;
+				background-color: rgba(0,0,0,0.1);
+				top: 190px;
+				display: none;
+			}
+			#contaniner #left{
+				left: 5px;
+			}
+			#contaniner #right{
+				right: 5px;
+			}
+			ol{
+				position: absolute;
+				bottom: 20px;
+				left: 265px;
+			}
+			ol li{
+				width: 20px;
+				height: 20px;
+				border-radius: 100%;
+				background-color: #FFFFFF;
+				float: left;
+				margin-left: 5px;
+			}
+			.active{
+				background-color: red;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="contaniner">
+			<ul id="swiper-img">
+				<!-- <li><img src="../img/logo.png" ></li> -->
+				<li>1</li>
+				<li>2</li>
+				<li>3</li>
+			</ul>
+			<div id="left">&lt;</div>
+			<div id="right">&gt;</div>
+			<ol id="point">
+				<li class="active"></li>
+				<li></li>
+				<li></li>
+			</ol>
+		</div>
+		<script type="text/javascript">
+			var swiper = document.getElementById("contaniner")
+			var oLeft = document.getElementById("left")
+			var oRight = document.getElementById("right")
+			var oUl = document.getElementById("swiper-img")
+			var aLi = oUl.getElementsByTagName("li")
+			var oOl = document.getElementById("point")
+			var aOl = oOl.getElementsByTagName("li")
+			index = 0
+			swiper.onmouseover = function(){
+				oLeft.style.display = "block"
+				oRight.style.display = "block"
+			}
+			swiper.onmouseout = function(){
+				oLeft.style.display = "none"
+				oRight.style.display = "none"
+			}
+			oRight.onclick = function() {
+				for(var i = 0; i < aLi.length; i++){
+					aLi[i].style.display = "none"
+					aOl[i].className = ""
+				}
+				index++
+				if(index > aLi.length-1){
+					index = 0
+				}
+				aLi[index].style.display = "block"
+				aOl[index].className = "active"
+			}
+			oLeft.onclick = function() {
+				for(var i = 0; i < aLi.length; i++){
+					aLi[i].style.display = "none"
+					aOl[i].className = ""
+				}
+				index--
+				if(index < 0){
+					index = aLi.length-1
+				}
+				aLi[index].style.display = "block"
+				aOl[index].className = "active"
+			}
+>>>>>>> 54dc926e033382b984d277118489c25166d63e2e
 		</script>
 	</body>
 </html>

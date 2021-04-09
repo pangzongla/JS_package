@@ -6,7 +6,11 @@
 </head>
 <body>
 <time></time>
+<<<<<<< HEAD
 <script>
+=======
+<script>
+>>>>>>> 54dc926e033382b984d277118489c25166d63e2e
 	// 实现一个计算当年还剩多少时间的倒数计时程序,要求网页实时动态显示"xx年还剩xx天xx时xx分xx秒"
 function isDate(){
 	var time = document.getElementsByTagName("time")[0];
@@ -24,10 +28,17 @@ function isDate(){
 	var modeHour = modeDay%(60*60);
 	var newMinute = parseInt(modeHour/60);
 	var modeMinute = modeHour%60;
+<<<<<<< HEAD
 	var newSecond = parseInt(modeMinute); */
 	var newDay = parseInt(iTime/1000/60/60/24)
 	var newHour = parseInt(iTime/1000/60/60%24)  //注意，余什么就等于什么
 	var newMinute = parseInt(iTime/1000/60%60)
+=======
+	var newSecond = parseInt(modeMinute); */
+	var newDay = parseInt(iTime/1000/60/60/24)
+	var newHour = parseInt(iTime/1000/60/60%24)  //注意，余什么就等于什么
+	var newMinute = parseInt(iTime/1000/60%60)
+>>>>>>> 54dc926e033382b984d277118489c25166d63e2e
 	var newSecond = parseInt(iTime/1000%60)
 	time.innerHTML = year+"年"+"还剩"+newDay+"天"+newHour+"小时"+newMinute+"分钟"+newSecond+"秒";
 }

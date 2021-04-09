@@ -2,6 +2,7 @@
 <html>
 	<head>
 		<meta charset="utf-8">
+<<<<<<< HEAD
 		<title></title>
 		<style type="text/css">
 			body{
@@ -54,5 +55,59 @@
 				}
 			}
 		}
+=======
+		<title></title>
+		<style type="text/css">
+			body{
+				margin: 0;
+				padding: 0;
+				background-color: #000000;
+				font-size: 50px;
+				color: white;
+			}
+		</style>
+	</head>
+	<body onload="countdown()">
+		<span id="dd"></span>
+		-
+		<span id="hh"></span>
+		-
+		<span id="mm"></span>
+		-
+		<span id="ss"></span>
+	</body>
+	<script type="text/javascript">
+		function countdown(){
+			var nowDate = new Date()
+			// 这里设置指定日期
+			var endDate = new Date("2020/6/18 00:00:00")
+			// 获取时间戳差
+			var timeDifference = endDate.getTime() - nowDate.getTime()
+			var d,h,m,s
+			if(timeDifference >= 0){
+				// 除以什么就剩余什么
+			    d = Math.floor(timeDifference / 1000 / 60 / 60 / 24)
+			    h = Math.floor(timeDifference / 1000 / 60 / 60 % 24)
+			    m = Math.floor(timeDifference / 1000 / 60 % 60 )
+			    s = Math.floor(timeDifference / 1000 % 60 )
+			} else {
+				alert("请输入正确的指定时间")
+			}
+			document.getElementById("dd").innerHTML = toStr(d) + "天";
+			document.getElementById("hh").innerHTML = toStr(h) + "时";
+			document.getElementById("mm").innerHTML = toStr(m) + "分";
+			document.getElementById("ss").innerHTML = toStr(s) + "秒";
+			setTimeout(countdown,1000) //不用永动机，因为还要清除,直接递归一个定时器
+			
+			// 统一显示两位数
+			function toStr(num){
+				if(num < 10){
+					return "0"+num
+				} else {
+					return num
+				}
+			}
+		}
+>>>>>>> 54dc926e033382b984d277118489c25166d63e2e
 	</script>
 </html>

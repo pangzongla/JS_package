@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -50,4 +51,58 @@
         }
     </script>
 </body>
+=======
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        #big{
+            width: 300px;
+            height: 300px;
+            position: relative;
+            background-color: royalblue;
+        }
+        #big #small{
+            width: 50px;
+            height: 50px;
+            background-color: salmon;
+            position: absolute;
+            right: 0;
+            bottom: 0;
+        }
+    </style>
+</head>
+<body>
+    <div id="big">
+        <div id="small"></div>
+    </div>
+    <script>
+        var big = document.getElementById("big")
+        var small = document.getElementById("small")
+        
+        small.onmousedown = function(ev) {
+            var ev = ev || event 
+            var oldX = ev.clientX
+            var oldY = ev.clientY
+            var oldWidth = big.offsetWidth //不是big.style.width 这个是修改才用的
+            var oldHeight = big.offsetHeight
+            document.onmousemove = function(ev){
+                var ev = ev || event
+                big.style.width = oldWidth + ev.clientX - oldX + "px"
+                big.style.height = oldHeight + ev.clientY - oldY + "px"
+            } 
+            document.onmouseup = function() {
+                document.onmousemove = null
+            }
+        }
+    </script>
+</body>
+>>>>>>> 54dc926e033382b984d277118489c25166d63e2e
 </html>

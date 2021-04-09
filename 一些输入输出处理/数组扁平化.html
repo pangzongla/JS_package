@@ -4,6 +4,7 @@
 		<meta charset="utf-8">
 		<title></title>
 	</head>
+<<<<<<< HEAD
 	<body>
 		<script type="text/javascript">
 			var arr = [1,[2,3,4,[5,6],7],8]
@@ -21,5 +22,24 @@
 			}
 			console.log(arrToOne(arr))
 		</script>
+=======
+	<body>
+		<script type="text/javascript">
+			var arr = [1,[2,3,4,[5,6],7],8]
+			
+			function arrToOne(arr,newArr){
+				var newArr = newArr || []
+				for(var i=0; i<arr.length; i++){
+					if(Object.prototype.toString.call(arr[i]) == "[object Array]"){
+						arrToOne(arr[i],newArr)
+					}else{
+						newArr.push(arr[i])
+					}
+				}
+				return newArr
+			}
+			console.log(arrToOne(arr))
+		</script>
+>>>>>>> 54dc926e033382b984d277118489c25166d63e2e
 	</body>
 </html>

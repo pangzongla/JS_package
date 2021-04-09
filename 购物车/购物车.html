@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!DOCTYPE html>
 <html>
 	<head>
@@ -211,4 +212,219 @@
 			}
 		</script>
 	</body>
+=======
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>购物车</title>
+		<link rel="stylesheet" type="text/css" href="css/style.css" />
+	</head>
+	<body>
+		<table id="cartTable">
+			<thead>
+				<tr>
+					<th><label><input class="check-all check" type="checkbox" />&nbsp;全选</label></th>
+					<th>商品</th>
+					<th>单价</th>
+					<th>数量</th>
+					<th>小计</th>
+					<th>操作</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td class="checkbox"><input class="check-one check" type="checkbox" /></td>
+					<td class="goods"><img src="images/1.jpg" alt="" /><span>Casio/卡西欧 EX-TR350</span></td>
+					<td class="price">5999.88</td>
+					<td class="count"><span class="reduce"></span><input class="count-input" type="text" value="1" /><span class="add">+</span></td>
+					<td class="subtotal">5999.88</td>
+					<td class="operation"><span class="delete">删除</span></td>
+				</tr>
+				<tr>
+					<td class="checkbox"><input class="check-one check" type="checkbox" /></td>
+					<td class="goods"><img src="images/2.jpg" alt="" /><span>Canon/佳能 PowerShot SX50 HS</span></td>
+					<td class="price">3888.50</td>
+					<td class="count"><span class="reduce"></span><input class="count-input" type="text" value="1" /><span class="add">+</span></td>
+					<td class="subtotal">3888.50</td>
+					<td class="operation"><span class="delete">删除</span></td>
+				</tr>
+				<tr>
+					<td class="checkbox"><input class="check-one check" type="checkbox" /></td>
+					<td class="goods"><img src="images/3.jpg" alt="" /><span>Sony/索尼 DSC-WX300</span></td>
+					<td class="price">1428.50</td>
+					<td class="count"><span class="reduce"></span><input class="count-input" type="text" value="1" /><span class="add">+</span></td>
+					<td class="subtotal">1428.50</td>
+					<td class="operation"><span class="delete">删除</span></td>
+				</tr>
+				<tr>
+					<td class="checkbox"><input class="check-one check" type="checkbox" /></td>
+					<td class="goods"><img src="images/4.jpg" alt="" /><span>Fujifilm/富士 instax mini 25</span></td>
+					<td class="price">640.60</td>
+					<td class="count"><span class="reduce"></span><input class="count-input" type="text" value="1" /><span class="add">+</span></td>
+					<td class="subtotal">640.60</td>
+					<td class="operation"><span class="delete">删除</span></td>
+				</tr>
+			</tbody>
+		</table>
+		<div class="foot" id="foot">
+			<label class="fl select-all"><input type="checkbox" class="check-all check" />&nbsp;全选</label>
+			<a class="fl delete" id="deleteAll" href="javascript:;">删除</a>
+			<div class="fr closing">结 算</div>
+			<div class="fr total">合计：￥<span id="priceTotal">0.00</span></div>
+			<div class="fr selected" id="selected">已选商品<span id="selectedTotal">0</span>件<span class="arrow up">︽</span><span
+				 class="arrow down">︾</span></div>
+			<div class="selected-view">
+				<div id="selectedViewList" class="clearfix">
+					<!--<div><img src="images/1.jpg"><span>取消选择</span></div>-->
+				</div>
+				<span class="arrow">◆<span>◆</span></span>
+			</div>
+		</div>
+		<script type="text/javascript">
+			// bug:input可以输入字符串,负数。
+			// bug:全选的情况下刷新页面，总数和总价为0（可以先自动执行函数解决）
+
+			// 获取所有按钮
+			var allCheckBox = getClassObj("check")
+			// 获取所有表格的行
+			var cartTable = document.getElementById("cartTable")
+			var allTr = cartTable.tBodies[0].rows
+			// 获取总商品数和总价格的标签
+			var selectedTotal = document.getElementById("selectedTotal")
+			var priceTotal = document.getElementById("priceTotal")
+			// 获取底部和列表弹窗
+			var foot = document.getElementById("foot")
+			var selectedViewList = document.getElementById("selectedViewList");
+
+			// 如果点击全选按钮全选，再点击取消全选
+			for (var i = 0; i < allCheckBox.length; i++) {
+				allCheckBox[i].onclick = function() {
+					// 专门用个类名来识别全选按钮
+					if (this.className == "check-all check") {
+						for (var j = 0; j < allCheckBox.length; j++) {
+							// 让所有的按钮跟随全选按钮
+							allCheckBox[j].checked = this.checked
+						}
+					}else{
+						// 如果不是全选按钮,那就把全选状态取消
+						allCheckBox[0].checked = false
+						allCheckBox[allCheckBox.length-1].checked = false
+					}
+					toGetTotal()
+				}
+			}
+
+
+
+			// 输入一个class名,返回出所有有这个类名的标签数组
+			function getClassObj(clsName) {
+				var arr = []
+				var allObj = document.getElementsByTagName("*")
+				for (var i = 0; i < allObj.length; i++) {
+					// 这里由于元素的class名同时不止有一个，有可能多个，然后这个类名不知道是在最前还是后面，所以还需要查找_check或check_，这里用正则会方便很多
+					if (allObj[i].className == clsName || allObj[i].className.indexOf(" " + clsName) != -1 || allObj[i].className.indexOf(
+							clsName + " ") != -1) {
+						arr.push(allObj[i])
+					}
+				}
+				return arr
+			}
+
+
+			// 计算总数量和总价格，添加商品图片标签到列表弹窗
+			function toGetTotal() {
+				var selectedNum = 0
+				var allPrice = 0
+				var list = ""
+				for (var i = 0; i < allTr.length; i++) {
+					// 只有被选中的才加入到总数量和总价格
+					if (allTr[i].getElementsByTagName("input")[0].checked) {
+						selectedNum += parseInt(allTr[i].getElementsByTagName("input")[1].value)
+						allPrice += parseFloat(allTr[i].cells[4].innerHTML)
+						// 给商品列表添加img标签，并加一个span标签的属性记录下标
+						list += "<div><img src='"+allTr[i].getElementsByTagName("img")[0].src+"'><span index='"+i+"'>取消选择</span></div>"
+					}
+				}
+				selectedTotal.innerHTML = selectedNum
+				priceTotal.innerHTML = allPrice.toFixed(2)
+				selectedViewList.innerHTML = list
+			}
+
+            // 点击数量的加减
+			for (var i = 0; i < allTr.length; i++) {
+				// 因为会有后续添加的商品,所以需要事件冒泡
+				allTr[i].onclick = function(ev) {
+					var ev = ev || event
+					var target = ev.target || ev.srcElement
+					var targertInput = this.getElementsByTagName("input")[1]
+					var targetNum = parseInt(targertInput.value)
+					switch (target.className) {
+						// 点击添加
+						case "add":
+							targertInput.value = targetNum + 1
+							eachTotal(this)
+							break
+						// 点击减少
+						case "reduce":
+							if (targetNum <= 1) {
+								targertInput.value = 1
+							} else {
+								targertInput.value = targetNum - 1
+							}
+							eachTotal(this)
+							break
+						// 点击删除,先弹出询问
+						case "delete":
+							var con = confirm("确定删除吗")
+							if (con) {
+								this.parentNode.removeChild(this)
+							}
+							break
+					}
+					toGetTotal()
+				}
+			}
+
+			// 每个商品的总价
+			function eachTotal(tr) {
+				// 这里是算出每个商品的总价 商品价格*商品数量
+				var tdPrice = tr.cells[2].innerHTML
+				var tdNum = tr.getElementsByTagName("input")[1].value
+				tr.cells[4].innerHTML = (tdPrice * tdNum).toFixed(2)
+				// 这里是控制减少按键的样式(不一定要精确到对应td获取元素)
+				var reduceBtn = tr.getElementsByTagName("span")[1]
+				if (tdNum == "1") {
+					reduceBtn.innerHTML = ""
+				} else {
+					reduceBtn.innerHTML = "-"
+				}
+			}
+			
+			// 点击显示商品列表弹窗
+			foot.onclick = function(){
+				// 如果已经有选择商品就可以点击弹出,没有就不弹出
+				if(selectedTotal.innerHTML != 0){
+					this.className = "foot show"
+				}else{
+					this.className = "foot"
+				}
+			}
+			
+			// 列表弹窗点击取消选择商品
+			selectedViewList.onclick = function(ev){
+				var ev = ev || event
+				var target = ev.target || ev.srcElement
+				if(target.nodeName == "SPAN"){
+					// 直接把对应的商品取消选中
+					allTr[target.getAttribute("index")].getElementsByTagName("input")[0].checked = false
+					// toGetTotal() 直接执行这个重新渲染弹窗列表，但是有个bug，比如全选了的情况下，有商品取消选中后，全选框依然选中
+					// 所以最好再次执行选择框的onclick事件，跟随全选框的样式
+					allTr[target.getAttribute("index")].getElementsByTagName("input")[0].onclick()
+				}
+			}
+		</script>
+	</body>
+>>>>>>> 54dc926e033382b984d277118489c25166d63e2e
 </html>

@@ -2,6 +2,7 @@
 <html>
 	<head>
 		<meta charset="utf-8">
+<<<<<<< HEAD
 		<title>九宫格抽奖</title>
 		<style type="text/css">
 			html,body,ul,li{
@@ -155,6 +156,161 @@
 			}
 			
 			
+=======
+		<title>九宫格抽奖</title>
+		<style type="text/css">
+			html,body,ul,li{
+				margin: 0;
+				padding: 0;
+			}
+			#wrap{
+				width: 100%;
+				margin-top: 100px;
+			}
+			#wrap #lottery{
+				margin: 0 auto;
+				width: 240px;
+				position: relative;
+				list-style: none;
+			}
+			#wrap #lottery li{
+				width: 80px;
+				height: 80px;
+				border: 1px solid #000;
+				box-sizing: border-box;
+				text-align: center;
+				line-height: 80px;
+				position: absolute;
+			}
+			#wrap #lottery li:nth-of-type(1){
+				left: 0;
+				top: 0;
+			}
+			#wrap #lottery li:nth-of-type(2){
+				left: 80px;
+				top: 0;
+			}
+			#wrap #lottery li:nth-of-type(3){
+				left: 160px;
+				top: 0;
+			}
+			#wrap #lottery li:nth-of-type(4){
+				left: 160px;
+				top: 80px;
+			}
+			#wrap #lottery li:nth-of-type(5){
+				left: 160px;
+				top: 160px;
+			}
+			#wrap #lottery li:nth-of-type(6){
+				left: 80px;
+				top: 160px;
+			}
+			#wrap #lottery li:nth-of-type(7){
+				left: 0;
+				top: 160px;
+			}
+			#wrap #lottery li:nth-of-type(8){
+				left: 0;
+				top: 80px;
+			}
+			#wrap #lottery li:nth-of-type(9){
+				left: 80px;
+				top: 80px;
+				cursor: pointer;
+				background-color: gold;
+			}
+			#wrap #lottery .active{
+				position: absolute;
+				top: 0;
+				left: 0;
+				content: "";
+				background-color: rgba(0,0,0,0.1);
+			}
+			#wrap #prizedisplay{
+				margin: 0 auto;
+				width: 40px;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="wrap">
+			<div id="prizedisplay">奖品</div>
+			<ul id="lottery">
+				<li class="active">1</li>
+				<li>2</li>
+				<li>3</li>
+				<li>4</li>
+				<li>5</li>
+				<li>6</li>
+				<li>7</li>
+				<li>8</li>
+				<li>点击抽奖</li>
+			</ul>
+		</div>
+		
+		<script type="text/javascript">
+			var arr = [1,2,3,4,5,6,7,8]
+			var lottery = document.getElementById("lottery")
+			var prize = document.getElementById("prizedisplay")
+			var aLi = document.getElementsByTagName("li")
+			
+			var i = 0 //目前转到哪个的下标
+			var count = 0 //圈数初始值
+			var totalCount = 9 //设置总圈数
+			var speed = 500 //设置转速
+			var minSpeed = 500 //初始最小速度
+			var timer = null
+			var isClick = false //是否点击抽奖按钮
+			var index = 4 //设置指定奖品
+			// var index = Math.floor(Math.random()*arr.length+1) //随机奖品
+			
+			aLi[aLi.length - 1].onclick = function() {
+				if(!isClick) {
+					count = 0
+					run()
+					isClick = true
+				}
+			}
+			
+			// 抽奖机制 递归函数
+			function run() {
+				// 先去除所有active类名
+				for(var j = 0; j < aLi.length; j++){
+					aLi[j].classList.remove("active")
+				}
+				// 速度加快
+				speed -= 50
+				// 速度不能快于10
+				if(speed <= 10){
+					speed = 10
+				}
+				i++
+				// 计算转圈次数
+				if(i >= aLi.length - 1){
+					i = 0
+					count++
+				}
+				prize.innerHTML = arr[i]
+				aLi[i].classList.add("active")
+				
+				// 圈数到了且转到指定位置就停止
+				if(count >= totalCount && (i + 1) == index){
+					clearInterval(timer)
+					isClick = false
+					speed = minSpeed
+					// index = Math.floor(Math.random()*arr.length+1) //随机奖品
+				} else {
+					timer = setTimeout(run,speed) //递归入口
+					// 开始减速
+					if(count >= totalCount - 1 || speed <= 50){
+						speed += 100
+					}
+				}
+			}
+			
+			
+>>>>>>> 54dc926e033382b984d277118489c25166d63e2e
 		</script>
 	</body>
 </html>

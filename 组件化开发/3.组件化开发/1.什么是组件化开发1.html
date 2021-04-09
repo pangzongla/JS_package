@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -119,4 +120,127 @@
     // 实现一个功能：t1没有的逻辑 不用去写，不用去传没有意义的参数
 </script>
 </body>
+=======
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style type="text/css">
+        #box, #box2, #box3, #box4{
+            width: 200px;
+            height: 200px;
+            background-color: red;
+            position: absolute;
+            left: 0;
+            top: 0;
+        }
+        #box2{
+            background-color: blue;
+            left: 200px;
+            top: 0px;
+        }
+        #box3{
+            background-color: black;
+            left: 400px;
+            top: 0px;
+        }
+        #box4{
+            background-color: green;
+            left: 600px;
+            top: 0px;
+        }
+    </style>
+</head>
+<body>
+<!--组件开发：
+    和继承一样，本质上都是一种代码的复用形式，和继承的不同点，更像是一种兄弟的关系，
+    关键点通过传入不同的参数来满足不同的需求，基于一套的代码；
+    继承需要不断的创造子类，代码较多，且浪费资源；-->
+
+
+<div id="box"></div>
+<div id="box2"></div>
+<div id="box3"></div>
+<div id="box4"></div>
+<script>
+    function Drag() {
+        this.oBox = null;  //这里不传入
+        this.difX = null;
+        this.difY = null;
+    }
+    Drag.prototype.init = function (option){   //在这里传入对象
+        this.oBox = document.getElementById(option.id)
+        var that = this;
+        this.oBox.onmousedown = function (ev) {
+            options.beforeDown();
+            that.down(ev);
+        }
+    }
+    Drag.prototype.down = function (ev){
+        var ev = ev || event;
+        var that = this;
+        this.difX = ev.clientX - this.oBox.offsetLeft;
+        this.difY = ev.clientY - this.oBox.offsetTop;
+        document.onmousemove = function (ev2) {
+            that.move(ev2);
+        };
+        document.onmouseup = function () {
+            that.up();
+        }
+    }
+    Drag.prototype.move = function (ev2) {
+        var ev = ev2 || event;
+        var L = ev.clientX - this.difX;
+        var T = ev.clientY - this.difY;
+        if (L<0){
+            L = 0;
+        }
+        if (T<0){
+            T = 0;
+        }
+        if (L>document.documentElement.clientWidth - this.oBox.offsetWidth){
+            L = document.documentElement.clientWidth - this.oBox.offsetWidth;
+        }
+        if (T>document.documentElement.clientHeight - this.oBox.offsetHeight){
+            T = document.documentElement.clientHeight - this.oBox.offsetHeight;
+        }
+        this.oBox.style.left = L + "px";
+        this.oBox.style.top = T + "px";
+    }
+    Drag.prototype.up = function () {
+        document.onmousemove = null;
+    }
+
+
+
+    extend(ChildDrag.prototype, Drag.prototype);
+    function extend(obj1,obj2) {
+        for(var attr in obj2){
+            obj1[attr] = obj2[attr];
+        }
+    }
+
+    //为了不用继承且能够为个别盒子加入一些特性，改成传入对象的方式创建对象
+    var t1 = new Drag();
+    t1.init({
+        id: "box"
+        beforeDown:function(){},  //如果不传入一个空的方法，那么上面执行代码就会，找不到对象的方法而报错
+        beforeMove: function(){}
+    });
+    var t2 = new Drag();
+    t2.init({
+        id: "box2",
+        beforeDown: function () {  //此时给box2加入特性，相应的要在执行代码中调用
+            alert(1)
+        },
+        beforeMove: function(){
+            alert(2)
+        }
+    });
+    // 问题： t1 根本没有相应的业务逻辑，但是我们还是要必须传入一个空函数
+    // 实现一个功能：t1没有的逻辑 不用去写，不用去传没有意义的参数
+</script>
+</body>
+>>>>>>> 54dc926e033382b984d277118489c25166d63e2e
 </html>

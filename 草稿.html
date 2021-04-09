@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!DOCTYPE html>
 <html>
 	<head>
@@ -50,4 +51,58 @@
 			obj.msg = "aa"
 		</script>
 	</body>
+=======
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<style type="text/css">
+		</style>
+	</head>
+	<body>
+		<script type="text/javascript">
+			
+			let obj = {
+				msg: "123"
+			}
+            
+			// 启动相应函数
+			observer(obj)
+			function observer(obj) {
+				if (ifObj(obj)) {
+					for (let key in obj) {
+						reactive(obj, key , obj[key])
+					}
+				}
+			}
+
+            // 核心监听方法
+			function reactive(obj, key, initValue) {
+				Object.defineProperty(obj, key, {
+					get: function() {
+						return initValue
+					},
+					set: function(value) {
+						initValue = value
+						render()
+					}
+				})
+			}
+            
+			// 数据改变视图重新渲染
+			function render() {
+				console.log("根据数据变化重新渲染视图")
+			}
+            
+			// 判断是否是对象
+			function ifObj(obj) {
+				return Object.prototype.toString.call(obj) == "[object Object]"
+			}
+            
+			// 修改数据
+			obj.msg = "aa"
+		</script>
+	</body>
+>>>>>>> 54dc926e033382b984d277118489c25166d63e2e
 </html>

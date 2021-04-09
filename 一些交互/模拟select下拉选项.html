@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!DOCTYPE html>
 <html lang="en">
 
@@ -115,4 +116,123 @@
     </script>
 </body>
 
+=======
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        #choose {
+            width: 600px;
+            height: 50px;
+            border: 1px solid #ccc;
+            margin: 50px auto;
+            font-size: 40px;
+            position: relative;
+        }
+
+        ul {
+            list-style: none;
+            width: 600px;
+            border: 1px solid #ccc;
+            position: absolute;
+            left: -1px;
+            top: 50px;
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="choose">
+        <!-- 这个标签一般用来定义作品的标题 -->
+        <cite id="chooseArea">请选择</cite>
+        <ul>
+            <li>上海</li>
+            <li>广州</li>
+            <li>深圳</li>
+            <li>海口</li>
+            <li>珠海</li>
+        </ul>
+    </div>
+    <script>
+        var choose = document.getElementById("choose")
+        var chooseArea = document.getElementById("chooseArea")
+        var aUl = document.getElementsByTagName("ul")[0]
+        var aLi = document.getElementsByTagName("li")
+        var index = -1 //这里用-1，是因为按下控制键后是先改变index值
+
+        choose.onclick = function () {
+            aUl.style.display = "block"
+        }
+
+        for (var i = 0; i < aLi.length; i++) {
+            aLi[i].onclick = function (ev) {
+                // 这里需要阻止事件冒泡，防止choose的点击事件
+                var ev = ev || event
+                if (ev.stopPropagation) {
+                    ev.stopPropagation()
+                } else {
+                    ev.cancelBubble = true
+                }
+                chooseArea.innerHTML = this.innerHTML
+                aUl.style.display = "none"
+            }
+
+            aLi[i].onmouseover = function () {
+                // 用一个全局变量来储存选项的背景设置，每次移出后都能还原
+                window.chooseAreaColor = this.style.background
+                // 这里注意this指向事件源
+                this.style.background = "#ccc"
+            }
+            aLi[i].onmouseout = function () {
+                this.style.background = chooseAreaColor
+            }
+        }
+
+        document.onkeydown = function (ev) {
+            var ev = ev || event
+            switch (ev.keyCode) {
+                case 40:
+                    // 先把选项背景样式清除
+                    for (var i = 0; i < aLi.length; i++) {
+                        aLi[i].style.background = "#fff";
+                    }
+                    index++
+                    if (index > aLi.length - 1) {
+                        index = 0;
+                    }
+                    aLi[index].style.background = "#ccc"
+                    break
+                case 38:
+                    for (var i = 0; i < aLi.length; i++) {
+                        aLi[i].style.background = "#fff";
+                    }
+                    index--
+                    if (index < 0) {
+                        index = aLi.length -1;
+                    }
+                    aLi[index].style.background = "#ccc"
+                    break
+                case 13:
+                    chooseArea.innerHTML = aLi[index].innerHTML
+                    aUl.style.display = "none"
+                    for (var i = 0; i < aLi.length; i++) {
+                        aLi[i].style.background = "#fff";
+                    }
+                    break
+            }
+        }
+    </script>
+</body>
+
+>>>>>>> 54dc926e033382b984d277118489c25166d63e2e
 </html>

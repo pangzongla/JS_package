@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -156,4 +157,164 @@
     }
 </script>
 </body>
+=======
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        .ui-dialog{
+            position: absolute;
+            /*left: 600px;*/
+            /*top: 100px;*/
+            border: 1px solid black;
+            z-index: 2;
+            background-color: white;
+        }
+        .ui-dialog-title{
+            position: relative;
+            background-color: #006666;
+            /*溢出隐藏*/
+            overflow: hidden;
+        }
+        .ui-dialog-title span{
+            color: white;
+            padding: 8px;
+            float: left;
+            width: 90%;
+        }
+        .ui-dialog-title i{
+            width: 20px;
+            height: 20px;
+            position: absolute;
+            right: 8px;
+            top: 8px;
+            color: white;
+            border: 1px solid white;
+            text-align: center;
+            line-height: 20px;
+            font-weight: bold;
+        }
+        .ui-dialog-content{
+            padding: 8px;
+        }
+    </style>
+</head>
+<body>
+<button>按钮1</button>
+<button>按钮2</button>
+<button>按钮3</button>
+<script>
+    function Dialog() {
+        this.oDialog = null;
+        this.oBackdrop = null;
+        //默认参数
+        this.settings = {
+            w: 300,
+            h: 300,
+            pos: "center",
+            title: '登录',
+            content: 'hello',
+            backdrop: false
+        }
+    }
+    Dialog.prototype.init =function (option){
+        extend(this.settings,option);  //固定套路后再写实现功能函数
+        if(this.data[this.settings.index] == undefined){   //防止可以无限创建
+            this.createDialog();
+            this.setPos();
+            if(this.settings.backdrop){
+                this.CreateBackDrop();
+            }
+            this.data[this.settings.index] = true;
+            this.closeDialog();
+        }
+    }
+    //创造一个弹窗演示
+    Dialog.prototype.createDialog = function () {
+        this.oDialog = document.createElement("div");
+        this.oDialog.style.width = this.settings.w + "px";
+        this.oDialog.style.height = this.settings.h + "px";
+        this.oDialog.className = "ui-dialog"; //给div加css
+        this.oDialog.innerHTML = '<div class="ui-dialog-title">\n' +
+                                 '<span>'+this.settings.title+'</span>\n' +
+                                 '<i>x</i>\n' +
+                                 '</div>\n' +
+                                 '<div class="ui-dialog-content">'+this.settings.content+'</div>';
+        document.body.appendChild(this.oDialog);
+    };
+    Dialog.prototype.setPos = function () {
+         if(this.settings.pos == "center"){
+             this.oDialog.style.left =  (vw()-this.oDialog.offsetWidth)/2 + "px";
+             this.oDialog.style.top =  (vh()-this.oDialog.offsetHeight)/2 + "px";
+         }else if(this.settings.pos == "rightBottom"){
+             this.oDialog.style.left =  (vw()-this.oDialog.offsetWidth) + "px";
+             this.oDialog.style.top =  (vh()-this.oDialog.offsetHeight) + "px";
+         }
+    };
+    Dialog.prototype.closeDialog = function () {
+        var oClose = this.oDialog.getElementsByTagName('i')[0];
+        var that = this;
+        oClose.onclick = function () {
+            document.body.removeChild(that.oDialog);
+            that.data[that.settings.index] = undefined;
+            if(that.settings.backdrop){
+                document.body.removeChild(that.oBackdrop);
+            }
+        }
+    }
+    //用来存储按钮
+    Dialog.prototype.data = {
+
+    }
+    //遮罩功能
+    Dialog.prototype.CreateBackDrop = function () {
+        this.oBackdrop = document.createElement("div");
+        this.oBackdrop.style.width = vw() + "px";
+        this.oBackdrop.style.height = vh() + "px";
+        this.oBackdrop.style.backgroundColor = "rgba(0,0,0,0.5)";
+        this.oBackdrop.style.position = "absolute";
+        this.oBackdrop.style.left = 0;
+        this.oBackdrop.style.top = 0;
+        this.oBackdrop.style.zIndex = 1;
+        document.body.appendChild(this.oBackdrop);
+    }
+
+
+    var aBtn = document.getElementsByTagName("button");
+    aBtn[0].onclick = function (ev) {
+        var d1 = new Dialog()
+        d1.init({
+            w:200,
+            h:200,
+            index: 0,
+            backdrop: true
+        })
+    };
+    aBtn[1].onclick = function (ev) {
+        var d2 = new Dialog()
+        d2.init({
+            w:200,
+            h:200,
+            pos: "center",
+            title: "注册",
+            content: "ojbk"
+        })
+    }
+
+    function extend(obj1,obj2) {
+        for (var attr in obj2){
+            obj1[attr] = obj2[attr];
+        }
+    }
+    function vw() {
+        return document.documentElement.clientWidth;
+    }
+    function vh() {
+        return document.documentElement.clientHeight;
+    }
+</script>
+</body>
+>>>>>>> 54dc926e033382b984d277118489c25166d63e2e
 </html>

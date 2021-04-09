@@ -4,6 +4,7 @@
 		<meta charset="utf-8">
 		<title></title>
 	</head>
+<<<<<<< HEAD
 	<body>
 		 <!-- 判断一个字符串中出现次数最多的字符,并统计次数 -->
 		 <script type="text/javascript">
@@ -31,6 +32,35 @@
 			}
 			
 			console.log(maxStr(str)) //bug，一样多的情况没考虑
+=======
+	<body>
+		 <!-- 判断一个字符串中出现次数最多的字符,并统计次数 -->
+		 <script type="text/javascript">
+		 	var str = "aaabbbbbccccc"
+			
+			function maxStr(str) {
+				var obj = {}
+				var maxNum = 0
+				var max = null // null只是期望是个object，可以是个占位符
+				for(var i=0; i<str.length; i++){
+					// var chart = str.charAt(i); 推荐还是以方法获取
+					if(obj[str[i]]){
+						obj[str[i]]++
+					}else{
+						obj[str[i]] = 1
+					}
+				}
+				for(var i in obj){
+					if(maxNum < obj[i]){
+						maxNum = obj[i]
+						max = i
+					}
+				}
+				return max+"出现最多，共"+maxNum+"次"
+			}
+			
+			console.log(maxStr(str)) //bug，一样多的情况没考虑
+>>>>>>> 54dc926e033382b984d277118489c25166d63e2e
 		 </script>
 	</body>
 </html>

@@ -2,6 +2,7 @@
 <html>
 	<head>
 		<meta charset="utf-8">
+<<<<<<< HEAD
 		<title></title>
 		<style type="text/css">
 			#box{
@@ -59,6 +60,65 @@
 					}
 				},50)
 			}
+=======
+		<title></title>
+		<style type="text/css">
+			#box{
+				width: 200px;
+				height: 200px;
+				background-color: antiquewhite;
+				position: absolute;
+				left: 400px;
+				top: 200px;
+				text-align: center;
+				line-height: 200px;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="box">
+			点击我快速摆动
+		</div>
+		<script type="text/javascript">
+			var oBox = document.getElementById("box")
+			oBox.onclick = function() {
+				waver(oBox,"left",400)
+			}
+			
+			// ------------------------------------------------------------------------------------------------------
+			
+			// 获取css值的兼容办法
+			function getStyle(obj,whichStyle) {
+				return window.getComputedStyle ? getComputedStyle(obj)[whichStyle] : obj.currentStyle[whichStyle]
+			}
+			
+			
+			/* 
+			obj为dom获取到的节点
+			direction为摆动方向,"left"/"top"
+			initParam为摆动方向属性的初始值
+			callback回调函数 
+			*/
+			function waver(obj,direction,initParam,callback){
+				var arr = [] //摆动频率
+				var index = 0
+				for(var i = 30; i >= 0; i -= 3){
+					arr.push(i,-i)
+				}
+				// 传的是字符串,所以用[]
+				obj.style[direction] = initParam + "px" //让每次点击的时候都能恢复原位，要不连续点击就位移了
+				clearInterval(obj.waver)
+				// 把永动机放在对象上
+				obj.waver = setInterval(function() {
+					obj.style[direction] = parseInt(getStyle(obj,direction)) + arr[index] + "px"
+					index++
+					if(index === arr.length){ //防止index一直加个不停
+						clearInterval(obj.waver)
+						callback && callback()
+					}
+				},50)
+			}
+>>>>>>> 54dc926e033382b984d277118489c25166d63e2e
 		</script>
 	</body>
 </html>
